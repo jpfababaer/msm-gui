@@ -2,9 +2,59 @@
   Movie #<%= @the_movie.id %> details
 </h1>
 
-<a href="/movies">
-  Go back
-</a>
+<div>
+  <a href="/movies">
+    Go back
+  </a>
+</div>
+
+<!--3 How to handle the delete button: specify the route we want to delete. Therefore, we need to dynamically determine the second URL route using the id. SCROLL DOWN-->
+<div>
+  <a href="/delete_movie/<%= @the_movie.id %>">Delete movie</a>
+</div>
+
+<hr>
+
+<!--5 Handling the Update form: here we create a new route which contains a dynamic 3rd URL. This allows Rails to know which movie to RETRIEVE and UPDATE with the values inputted in the form below (i.e. params info). SEARCH routes.rb-->
+<form action="/modify_movie_record/<%= @the_movie.id %>" method="post">
+
+<div>
+  <label for="title_field">Title</label>
+  <input id="title_field" type="text" name="the_title" value="<%= @the_movie.title %>">
+</div>
+
+<div>
+  <label for="year_field">Year</label>
+  <input id="year_field" type="text" name="the_year" value="<%= @the_movie.year %>">
+</div>
+
+<div>
+  <label for="duration_field">Duration</label>
+  <input id="duration_field" type="text" name="the_duration" value="<%= @the_movie.duration %>">
+</div>
+
+<div>
+  <label for="description_field">Description</label>
+  <textarea id="description_field" type="text" name="the_description"><%= @the_movie.description%></textarea>
+</div>
+
+<div>
+  <label for="image_field">Image</label>
+  <input id="image_field" type="text" name="the_image" value="<%= @the_movie.image %>">
+</div>
+
+<div>
+  <label for="director_id_field">Director ID</label>
+  <input id="director_id_field" type="text" name="the_director_id" value="<%= @the_movie.director_id %>">
+</div>
+
+<button>
+  Update movie
+</button>
+
+
+</form>
+
 
 <hr>
 
@@ -53,8 +103,13 @@
     <% matching_directors = Director.where({ :id => dir_id }) %>
     
     <% the_director = matching_directors.at(0) %>
+<!--4 This IF statement is required to allow the value to be displayed for movies that do NOT have the_director value inputted. Placeholder value needs to be placed for the webpage to load properly. GO BACK UP-->
+    <% if the_director == nil %>
+      Uh oh! We weren't able to find a director for this movie.
+    <% else %>
+      <%= the_director.name %>
+    <% end %>
 
-    <%= the_director.name %>
   </dd>
 
   <dt>
